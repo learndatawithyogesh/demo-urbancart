@@ -33,6 +33,7 @@ jobs:
     name: "Deploy to Prod"
     runs-on: ubuntu-latest
     needs: approval_gate
+    environment: prod
 
     steps:
       - name: Checkout repository
@@ -46,9 +47,9 @@ jobs:
         working-directory: ./urbancart
         env:
             DATABRICKS_HOST:      ${{ secrets.HOST }}
-            AZURE_SP_TENANT_ID:        ${{ secrets.AZURE_TENANT_ID }}
-            AZURE_SP_APPLICATION_ID:        ${{ secrets.AZURE_CLIENT_ID }}
-            AZURE_SP_CLIENT_SECRET:    ${{ secrets.AZURE_CLIENT_SECRET }}
+            ARM_TENANT_ID:        ${{ secrets.AZURE_TENANT_ID }}
+            ARM_CLIENT_ID:        ${{ secrets.AZURE_CLIENT_ID }}
+            ARM_CLIENT_SECRET:    ${{ secrets.AZURE_CLIENT_SECRET }}
 
       - name: Prod deployment complete
         run: echo "✅ Bundle deployed to Prod successfully"
