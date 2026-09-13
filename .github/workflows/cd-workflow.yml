@@ -14,20 +14,6 @@ jobs:
     environment: uat
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup Databricks CLI
-        uses: databricks/setup-cli@main
-
-      - name: Deploy to UAT
-        run: databricks bundle deploy --target uat
-        working-directory: ./urbancart
-        env:
-          
-          DATABRICKS_HOST:  ${{ secrets.AZURE_TENANT_ID }}
-          DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_UAT_TOKEN }}
-
       - name: UAT deployment complete
         run: echo "✅ Bundle deployed to UAT successfully"
 
@@ -59,8 +45,10 @@ jobs:
         run: databricks bundle deploy --target prod
         working-directory: ./urbancart
         env:
-          DATABRICKS_HOST:  ${{ secrets.DATABRICKS_PROD_HOST }}
-          DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_PROD_TOKEN }}
+            DATABRICKS_HOST:      ${{ secrets.HOST }}
+            ARM_TENANT_ID:        ${{ secrets.AZURE_TENANT_ID }}
+            ARM_CLIENT_ID:        ${{ secrets.AZURE_CLIENT_ID }}
+            ARM_CLIENT_SECRET:    ${{ secrets.AZURE_CLIENT_SECRET }}
 
       - name: Prod deployment complete
         run: echo "✅ Bundle deployed to Prod successfully"
