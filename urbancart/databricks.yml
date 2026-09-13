@@ -10,9 +10,7 @@ include:
 # Variable declarations. These variables are assigned in the dev/prod targets below.
 variables:
   catalog:
-    description: The catalog to use
-  schema:
-    description: The schema to use
+    description: Catalog for the deployment
 
 targets:
   dev:
@@ -26,16 +24,15 @@ targets:
       host: https://dbc-e3f9f6a4-4aca.cloud.databricks.com
     variables:
       catalog: urbancart_dev
-      schema: dev
   prod:
     mode: production
     workspace:
-      host: https://dbc-e3f9f6a4-4aca.cloud.databricks.com
-      # We explicitly deploy to /Workspace/Users/yogesh025yc@gmail.com to make sure we only have a single copy.
-      root_path: /Workspace/Users/yogesh025yc@gmail.com/.bundle/${bundle.name}/${bundle.target}
+      host: https://adb-7405614290184103.3.azuredatabricks.net
+      root_path: /Workspace/Shared/.bundle/${bundle.name}/
     variables:
-      catalog: urbancart_dev
-      schema: prod
+      catalog: urbancart_prod
     permissions:
-      - user_name: yogesh025yc@gmail.com
+      - service_principal_name: 438fb306-16a4-4ecb-ae49-d0bf9c906e1b
         level: CAN_MANAGE
+    run_as:
+      service_principal_name: 438fb306-16a4-4ecb-ae49-d0bf9c906e1b
