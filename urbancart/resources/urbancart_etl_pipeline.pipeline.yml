@@ -1,0 +1,17 @@
+resources:
+  pipelines:
+    pipeline_urbancart_sdp:
+      name: urbancart_sdp
+      configuration:
+        catalog_name: ${var.catalog}
+      libraries:
+        - glob:
+            include: ../src/sdp_transformations/**
+      schema: bronze
+      continuous: false
+      development: false
+      photon: true
+      channel: CURRENT
+      catalog: ${var.catalog}
+      serverless: true
+      root_path: ${var.pipeline_root_path}
