@@ -7,7 +7,7 @@ on:
 
 jobs:
 
-  # ── Job 1: Deploy to UAT ────────────────────────────────────
+  # ── Job 1: Deploy to UAT ─────────────────────────────────
   deploy_uat:
     name: "Deploy to UAT"
     runs-on: ubuntu-latest
