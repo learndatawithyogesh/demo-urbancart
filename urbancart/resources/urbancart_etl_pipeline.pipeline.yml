@@ -14,4 +14,3 @@ resources:
       channel: CURRENT
       catalog: ${var.catalog}
       serverless: true
-      root_path: ${var.pipeline_root_path}
