@@ -9,6 +9,7 @@ jobs:
   validate:
     name: "Validate Bundle"
     runs-on: ubuntu-latest
+    environment: dev
 
     steps:
       - name: Checkout Code
