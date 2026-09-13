@@ -1,0 +1,66 @@
+name: "CD Workflow"
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+
+  # ── Job 1: Deploy to UAT ────────────────────────────────────
+  deploy_uat:
+    name: "Deploy to UAT"
+    runs-on: ubuntu-latest
+    environment: uat
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Databricks CLI
+        uses: databricks/setup-cli@main
+
+      - name: Deploy to UAT
+        run: databricks bundle deploy --target uat
+        working-directory: ./urbancart
+        env:
+          
+          DATABRICKS_HOST:  ${{ secrets.AZURE_TENANT_ID }}
+          DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_UAT_TOKEN }}
+
+      - name: UAT deployment complete
+        run: echo "✅ Bundle deployed to UAT successfully"
+
+  # ── Job 2: Manual Approval Gate ────────────────────────────
+  approval_gate:
+    name: "Manual Approval — Waiting for Prod sign-off"
+    runs-on: ubuntu-latest
+    needs: deploy_uat
+    environment: prod
+
+    steps:
+      - name: Approval received
+        run: echo "✅ Manual approval granted — proceeding to Prod deployment"
+
+  # ── Job 3: Deploy to Prod ───────────────────────────────────
+  deploy_prod:
+    name: "Deploy to Prod"
+    runs-on: ubuntu-latest
+    needs: approval_gate
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Databricks CLI
+        uses: databricks/setup-cli@main
+
+      - name: Deploy to Prod
+        run: databricks bundle deploy --target prod
+        working-directory: ./urbancart
+        env:
+          DATABRICKS_HOST:  ${{ secrets.DATABRICKS_PROD_HOST }}
+          DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_PROD_TOKEN }}
+
+      - name: Prod deployment complete
+        run: echo "✅ Bundle deployed to Prod successfully"
