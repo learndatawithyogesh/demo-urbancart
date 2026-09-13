@@ -21,8 +21,8 @@ jobs:
         run: databricks bundle validate -t dev
         working-directory: ./urbancart
         env:
-          DATABRICKS_HOST:  ${{ secrets.DATABRICKS_DEV_HOST }}
-          DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_DEV_TOKEN }}
+          DATABRICKS_HOST:  ${{ secrets.HOST }}
+          DATABRICKS_TOKEN: ${{ secrets.TOKEN }}
 
       - name: Validation passed
         run: echo "✅ Bundle validation passed — PR is safe to merge"
